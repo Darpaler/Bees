@@ -17,10 +17,9 @@ public class BeeAIController : MonoBehaviour
     [SerializeField] protected float maxDistanceFromHive; // This should be far for workers and close for soldiers  
     [SerializeField] protected float minDistanceFromHive; // This should be far for workers and close for soldiers  
 
-    [SerializeField] protected Transform mainTarget = null; // Bees will always seek their main target location
+    public Transform mainTarget = null; // Bees will always seek their main target location
 
-    [SerializeField]
-    protected Transform secondTarget = null; // An additional target location that they can store and change
+    public Transform secondTarget = null; // An additional target location that they can store and change
 
     // Start is called before the first frame update
     protected void Start()
@@ -54,10 +53,9 @@ public class BeeAIController : MonoBehaviour
         {
             return true;
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
+
+    public virtual void TouchHive() { }
 
 }
