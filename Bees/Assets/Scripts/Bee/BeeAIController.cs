@@ -12,6 +12,7 @@ public class BeeAIController : MonoBehaviour
     // Variables
     protected Hive hive;
 
+    protected BeeMovement beeMovement;  // The Bee Movement component
     private NavMeshAgent agent; // The Nav Mesh Agent Component
 
     [SerializeField] protected float maxDistanceFromHive; // This should be far for workers and close for soldiers  
@@ -25,9 +26,10 @@ public class BeeAIController : MonoBehaviour
     protected void Start()
     {
         // Get Components
-        agent = GetComponent<NavMeshAgent>();
         hive = GameObject.FindGameObjectWithTag("Hive").GetComponent<Hive>();
 
+        agent = GetComponent<NavMeshAgent>();
+        beeMovement = GetComponent<BeeMovement>();
     }
 
     // Update is called once per frame

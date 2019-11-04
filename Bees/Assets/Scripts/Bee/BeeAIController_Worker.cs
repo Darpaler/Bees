@@ -17,6 +17,8 @@ public class BeeAIController_Worker : BeeAIController
     {
         base.Update();
 
+        Debug.Log(name + "'s Update function.");
+
         // When worker.mainTarget is null, set worker.mainTarget to a random point far from the hive.
         if (!mainTarget)
         {
@@ -26,20 +28,40 @@ public class BeeAIController_Worker : BeeAIController
 
     public override void TouchHive()
     {
-        Debug.Log("Touched Hive");
+        Debug.Log(name + " touched hive.");
         if (secondTarget)
         {
-            // Todo: the hive saves the location of the flower and the bee that submitted it. Then,
-            // Todo: worker.mainTarget is set to a random flower (according to the hive). 
+            Debug.Log(name + " reported " + secondTarget.name + " to the hive.");
+            // The hive saves the location of the flower and the bee that submitted it. Then,
+            // worker.mainTarget is set to a random flower (according to the hive). 
+            hive.AddFlower(secondTarget.gameObject, beeMovement);
+            mainTarget = hive.GetRandomFlower();
         }
-        else if (false)
+        else if (hive.flowerList.Count != 0)
         {
-            // Todo:  the hive "forgets" any flowers that worker has submitted. Then,
-            // Todo: worker.mainTarget is set to a random flower (according to the hive).
+            Debug.Log(name + " touched the hive while second target is null");
+            // The hive "forgets" any flowers that worker has submitted. Then,
+            // worker.mainTarget is set to a random flower (according to the hive).
+            hive.ForgetFlowers(beeMovement);
+            mainTarget = hive.GetRandomFlower();
+
         }
         else
         {
+            Debug.Log(name + " touched the hive while flower list was empty.");
             mainTarget = null;
+            Debug.Log(mainTarget);
         }
     }
+
+    void OnCollisionEnter(Collision other)
+    {
+        Debug.Log(name + " touched " + other.gameObject.name);
+        if (other.gameObject.tag == "Flower")
+        {
+            mainTarget = hive.transform;
+            secondTarget = other.transform;
+        }
+    }
+
 }
