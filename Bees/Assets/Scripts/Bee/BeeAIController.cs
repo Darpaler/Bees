@@ -40,10 +40,7 @@ public class BeeAIController : MonoBehaviour
             agent.SetDestination(mainTarget.position);
             if (CheckDestinationReached(mainTarget.position))
             {
-                if (!secondTarget)
-                {
-                    mainTarget = hive.transform;
-                }
+                ReachedDestination();
             }
         }
     }
@@ -59,5 +56,13 @@ public class BeeAIController : MonoBehaviour
     }
 
     public virtual void TouchHive() { }
+
+    protected void ReachedDestination()
+    {
+        if (!secondTarget)
+        {
+            mainTarget = hive.transform;
+        }
+    }
 
 }

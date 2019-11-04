@@ -50,7 +50,16 @@ public class BeeAIController_Worker : BeeAIController
         {
             Debug.Log(name + " touched the hive while flower list was empty.");
             mainTarget = null;
-            Debug.Log(mainTarget);
+        }
+    }
+
+    void ReachedDestination()
+    {
+        base.ReachedDestination();
+        if (secondTarget)
+        {
+            mainTarget = secondTarget;
+            secondTarget = null;
         }
     }
 
