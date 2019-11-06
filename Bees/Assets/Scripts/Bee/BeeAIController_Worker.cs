@@ -17,8 +17,6 @@ public class BeeAIController_Worker : BeeAIController
     {
         base.Update();
 
-        Debug.Log(name + "'s Update function.");
-
         // When worker.mainTarget is null, set worker.mainTarget to a random point far from the hive.
         if (!mainTarget)
         {
@@ -53,6 +51,13 @@ public class BeeAIController_Worker : BeeAIController
         }
     }
 
+    protected override void SeeFlower(GameObject flower)
+    {
+        mainTarget = flower.transform;
+        secondTarget = flower.transform;
+    }
+
+
     void ReachedDestination()
     {
         base.ReachedDestination();
@@ -65,11 +70,12 @@ public class BeeAIController_Worker : BeeAIController
 
     void OnCollisionEnter(Collision other)
     {
-        Debug.Log(name + " touched " + other.gameObject.name);
         if (other.gameObject.tag == "Flower")
         {
+            Debug.Log(name + " touched a flower");
             mainTarget = hive.transform;
             secondTarget = other.transform;
+            Debug.Log(name + " is heading towards " + mainTarget.name);
         }
     }
 

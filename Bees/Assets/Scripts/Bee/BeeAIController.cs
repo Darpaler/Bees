@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Experimental.PlayerLoop;
+using Vector3 = UnityEngine.Vector3;
 
 [RequireComponent(typeof(BeeMovement))]
 [RequireComponent(typeof(NavMeshAgent))]
@@ -15,8 +17,15 @@ public class BeeAIController : MonoBehaviour
     protected BeeMovement beeMovement;  // The Bee Movement component
     private NavMeshAgent agent; // The Nav Mesh Agent Component
 
-    [SerializeField] protected float maxDistanceFromHive; // This should be far for workers and close for soldiers  
-    [SerializeField] protected float minDistanceFromHive; // This should be far for workers and close for soldiers  
+    [SerializeField]
+    private float sightDistance;
+    [SerializeField]
+    private float fovAngle;
+
+    [SerializeField]
+    protected float maxDistanceFromHive; // This should be far for workers and close for soldiers  
+    [SerializeField]
+    protected float minDistanceFromHive; // This should be far for workers and close for soldiers  
 
     public Transform mainTarget = null; // Bees will always seek their main target location
 
@@ -35,6 +44,8 @@ public class BeeAIController : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
+        Sight();
+
         if (mainTarget)
         {
             agent.SetDestination(mainTarget.position);
@@ -63,6 +74,28 @@ public class BeeAIController : MonoBehaviour
         {
             mainTarget = hive.transform;
         }
+    }
+
+    protected void Sight()
+    {
+        Collider[] cols = Physics.OverlapSphere(transform.position, sightDistance);
+        Vector3 vectorToCollider;
+        foreach (Collider collider in cols)
+        {
+            vectorToCollider = (collider.transform.position - transform.position).normalized;
+            if (Vector3.Dot(vectorToCollider, transform.forward) >= Mathf.Cos(fovAngle))
+            {
+                if (collider.gameObject.tag == "Flower")
+                {
+                    SeeFlower(collider.gameObject);
+                }
+            }
+        }
+    }
+
+    protected virtual void SeeFlower(GameObject flower)
+    {
+
     }
 
 }

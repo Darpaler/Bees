@@ -131,6 +131,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fcd81cb14d352f489095dd3407aaa7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sightDistance: 10
+  fovAngle: 45
   maxDistanceFromHive: 20
   minDistanceFromHive: 20
   mainTarget: {fileID: 0}
