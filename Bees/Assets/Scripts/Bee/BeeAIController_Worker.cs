@@ -26,10 +26,8 @@ public class BeeAIController_Worker : BeeAIController
 
     public override void TouchHive()
     {
-        Debug.Log(name + " touched hive.");
         if (secondTarget)
         {
-            Debug.Log(name + " reported " + secondTarget.name + " to the hive.");
             // The hive saves the location of the flower and the bee that submitted it. Then,
             // worker.mainTarget is set to a random flower (according to the hive). 
             hive.AddFlower(secondTarget.gameObject, beeMovement);
@@ -72,10 +70,8 @@ public class BeeAIController_Worker : BeeAIController
     {
         if (other.gameObject.tag == "Flower")
         {
-            Debug.Log(name + " touched a flower");
             mainTarget = hive.transform;
             secondTarget = other.transform;
-            Debug.Log(name + " is heading towards " + mainTarget.name);
         }
     }
 

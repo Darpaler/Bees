@@ -78,22 +78,37 @@ public class BeeAIController : MonoBehaviour
 
     protected void Sight()
     {
+        // If the bee is heading towards the hive, don't interrupt
+        if(mainTarget != null && mainTarget.gameObject == hive.gameObject) { return; }
+
+        // Check all colliders around the bee
         Collider[] cols = Physics.OverlapSphere(transform.position, sightDistance);
         Vector3 vectorToCollider;
         foreach (Collider collider in cols)
         {
             vectorToCollider = (collider.transform.position - transform.position).normalized;
+
+            // If the collider is within our field of view
             if (Vector3.Dot(vectorToCollider, transform.forward) >= Mathf.Cos(fovAngle))
             {
+                // If the collider is a flower
                 if (collider.gameObject.tag == "Flower")
                 {
                     SeeFlower(collider.gameObject);
+                }
+                if (collider.GetComponent<BeeAIController_Soldier>())
+                {
+                    SeeSoldier(collider.GetComponent<BeeAIController_Soldier>());
                 }
             }
         }
     }
 
     protected virtual void SeeFlower(GameObject flower)
+    {
+
+    }
+    protected virtual void SeeSoldier(BeeAIController_Soldier other)
     {
 
     }

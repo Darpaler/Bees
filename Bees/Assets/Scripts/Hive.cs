@@ -21,6 +21,7 @@ public class Hive : MonoBehaviour
         tempTransform.transform.position = hit.position;
         tempTransform.AddComponent<SphereCollider>();
         tempTransform.AddComponent<TempTarget>();
+        tempTransform.GetComponent<TempTarget>().targetOwner = ai;
         return tempTransform.transform;
     }
 
@@ -40,11 +41,10 @@ public class Hive : MonoBehaviour
         }
     }
 
-    void OnTriggerStay(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<BeeAIController>())
         {
-            Debug.Log("Found " + other.gameObject.name);
             other.GetComponent<BeeAIController>().TouchHive();
         }
     }
@@ -57,7 +57,6 @@ public class Hive : MonoBehaviour
 
     public void AddFlower(GameObject flower, BeeMovement submittedBy)
     {
-        Debug.Log(submittedBy.gameObject.name + " added " + flower.name + " to the flower list!");
         Flower flowerToAdd = new Flower();
         flowerToAdd.flower = flower;
         flowerToAdd.submittedBy = submittedBy;
