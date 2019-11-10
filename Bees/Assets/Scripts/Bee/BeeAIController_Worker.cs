@@ -69,7 +69,6 @@ public class BeeAIController_Worker : BeeAIController
         }
     }
 
-
     void ReachedDestination()
     {
         base.ReachedDestination();
@@ -82,10 +81,11 @@ public class BeeAIController_Worker : BeeAIController
 
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "Flower")
+        if (other.gameObject.tag == "Flower" && mainTarget == other.transform)
         {
             mainTarget = hive.transform;
             secondTarget = other.transform;
+            other.gameObject.GetComponentInParent<SpawnFlower>().currentCollect -= 1;
         }
     }
 

@@ -27,9 +27,22 @@ public class BeeAIController : MonoBehaviour
     [SerializeField]
     protected float minDistanceFromHive; // This should be far for workers and close for soldiers  
 
+    [SerializeField]
+    protected float maxDistanceFromPlayer; // This should be far for workers and close for soldiers  
+    [SerializeField]
+    protected float minDistanceFromPlayer; // This should be far for workers and close for soldiers  
+
     public Transform mainTarget = null; // Bees will always seek their main target location
 
     public Transform secondTarget = null; // An additional target location that they can store and change
+
+    private GameObject player;              // The player
+    private NoiseMaker playerNoiseMaker;    // The player's noise maker component
+    [SerializeField]
+    private float hearingRadius = 3f;       // How far we can hear 
+    [SerializeField]
+    private float hearingRefreshPeriod = 3f;
+    private float currentHearingRefreshPeriod = 0f;
 
     // Start is called before the first frame update
     protected void Start()
@@ -45,6 +58,17 @@ public class BeeAIController : MonoBehaviour
     protected void Update()
     {
         Sight();
+
+        if(currentHearingRefreshPeriod > 0)
+        {
+            currentHearingRefreshPeriod -= Time.deltaTime;
+        }
+
+        if (mainTarget != player && currentHearingRefreshPeriod <= 0)
+        {
+            Hearing();
+            currentHearingRefreshPeriod = hearingRefreshPeriod;
+        }
 
         if (mainTarget)
         {
@@ -110,6 +134,29 @@ public class BeeAIController : MonoBehaviour
         }
     }
 
+    protected void Hearing()
+    {
+        // If the bee is heading towards the hive, don't interrupt
+        if (mainTarget != null && mainTarget.gameObject == hive.gameObject) { return; }
+
+        // If the noise maker is not set
+        if (playerNoiseMaker == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+            playerNoiseMaker = player.GetComponent<NoiseMaker>();
+        }
+
+        // If we did not fail to find the player's noise maker
+        if(playerNoiseMaker != null)
+        {
+            // If we're close enough to hear the player
+            if (Vector3.Distance(player.transform.position, transform.position) <= playerNoiseMaker.volume + hearingRadius)
+            {
+                HearPlayer(player);
+            }
+        }
+    }
+
     protected virtual void SeeFlower(GameObject flower)
     {
 
@@ -121,6 +168,32 @@ public class BeeAIController : MonoBehaviour
     protected virtual void SeePlayer(GameObject player)
     {
 
+    }
+    protected void HearPlayer(GameObject player)
+    {
+        Debug.Log("Heard The Player");
+
+        // Get a random distance
+        float walkRadius = Random.Range(minDistanceFromPlayer, maxDistanceFromPlayer);
+
+        // Get a random direction
+        Vector3 randomDirection;
+        randomDirection = player.transform.position + Random.insideUnitSphere * walkRadius;
+
+        // Grab a point on the nav mesh at the random distance and direction
+        NavMeshHit hit;
+        NavMesh.SamplePosition(randomDirection, out hit, walkRadius, 1);
+
+        // Create a temporary target there
+        GameObject tempTransform = new GameObject();
+        tempTransform.name = name + "'s TempTarget";
+        tempTransform.transform.position = hit.position;
+        tempTransform.AddComponent<SphereCollider>();
+        tempTransform.AddComponent<TempTarget>();
+        tempTransform.GetComponent<TempTarget>().targetOwner = gameObject;
+
+        // Set the main target to that target
+        mainTarget = tempTransform.transform;
     }
 
 }

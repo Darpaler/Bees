@@ -135,8 +135,12 @@ MonoBehaviour:
   fovAngle: 45
   maxDistanceFromHive: 20
   minDistanceFromHive: 12
+  maxDistanceFromPlayer: 17
+  minDistanceFromPlayer: 15
   mainTarget: {fileID: 0}
   secondTarget: {fileID: 0}
+  hearingRadius: 3
+  callForHelpDistance: 10
 --- !u!114 &7704217212784077524
 MonoBehaviour:
   m_ObjectHideFlags: 0

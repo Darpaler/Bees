@@ -11,17 +11,26 @@ public class Hive : MonoBehaviour
 
     public Transform GetRandomPointFromHive(GameObject ai, float minDistanceFromHive, float maxDistanceFromHive)
     {
+        // Get a random distance
         float walkRadius = Random.Range(minDistanceFromHive, maxDistanceFromHive);
+
+        // Get a random direction
         Vector3 randomDirection;
         randomDirection = Random.insideUnitSphere * walkRadius;
+
+        // Grab a point on the nav mesh at the random distance and direction
         NavMeshHit hit;
         NavMesh.SamplePosition(randomDirection, out hit, walkRadius, 1);
+
+        // Create a temporary target there
         GameObject tempTransform = new GameObject();
         tempTransform.name = ai.name + "'s TempTarget";
         tempTransform.transform.position = hit.position;
         tempTransform.AddComponent<SphereCollider>();
         tempTransform.AddComponent<TempTarget>();
         tempTransform.GetComponent<TempTarget>().targetOwner = ai;
+
+        // Return that targets transform
         return tempTransform.transform;
     }
 

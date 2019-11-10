@@ -22,24 +22,44 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Up
         if (Input.GetKey(KeyCode.UpArrow))
         {
             movement.MoveVertical(data.speed);
         }
-        //Down
+        // Down
         if (Input.GetKey(KeyCode.DownArrow))
         {
             movement.MoveVertical(-data.speed);
         }
-        //Right
+        // Right
         if (Input.GetKey(KeyCode.RightArrow))
         {
             movement.MoveHorizontal(data.speed);
         }
-        //Left
+        // Left
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             movement.MoveHorizontal(-data.speed);
+        }
+        // Stealth
+        if (Input.GetKeyDown(KeyCode.RightShift))
+        {
+            movement.Stealth();
+        }
+        if (Input.GetKeyUp(KeyCode.RightShift))
+        {
+            movement.UnStealth();
+        }
+        // Pick Flower
+        if (Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            movement.PickFlower(data.pickRadius);
+        }
+        // Drop Flower
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            movement.DropFlower();
         }
     }
 }
