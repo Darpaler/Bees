@@ -96,9 +96,15 @@ public class BeeAIController : MonoBehaviour
                 {
                     SeeFlower(collider.gameObject);
                 }
+                // If the collider is a soldier
                 if (collider.GetComponent<BeeAIController_Soldier>())
                 {
                     SeeSoldier(collider.GetComponent<BeeAIController_Soldier>());
+                }
+                // If the collider is the player
+                if (collider.gameObject.tag == "Player")
+                {
+                    SeePlayer(collider.gameObject);
                 }
             }
         }
@@ -109,6 +115,10 @@ public class BeeAIController : MonoBehaviour
 
     }
     protected virtual void SeeSoldier(BeeAIController_Soldier other)
+    {
+
+    }
+    protected virtual void SeePlayer(GameObject player)
     {
 
     }

@@ -71,4 +71,11 @@ public class BeeAIController_Soldier : BeeAIController
             mainTarget = other.secondTarget;
         }
     }
+
+    protected override void SeePlayer(GameObject player)
+    {
+        mainTarget = player.transform;
+        secondTarget = player.transform;
+    }
+
 }

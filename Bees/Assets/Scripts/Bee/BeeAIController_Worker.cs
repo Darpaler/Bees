@@ -5,6 +5,9 @@ using UnityEngine.AI;
 
 public class BeeAIController_Worker : BeeAIController
 {
+    // Variables
+    [SerializeField]                              // The max distance a soldier can be from the worker
+    private float callForHelpDistance = 10f;      // to be called when the worker sees the player
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +56,17 @@ public class BeeAIController_Worker : BeeAIController
     {
         mainTarget = flower.transform;
         secondTarget = flower.transform;
+    }
+
+    protected override void SeePlayer(GameObject player)
+    {
+        foreach(Collider col in Physics.OverlapSphere(transform.position, callForHelpDistance))
+        {
+            if (col.GetComponent<BeeAIController_Soldier>())
+            {
+                col.GetComponent<BeeAIController_Soldier>().mainTarget = player.transform;
+            }
+        }
     }
 
 
