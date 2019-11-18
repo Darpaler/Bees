@@ -14,6 +14,8 @@ public class BeeAIController : MonoBehaviour
     protected Hive hive;
 
     protected BeeMovement beeMovement;  // The Bee Movement component
+    protected BeeData beeData;
+
     private NavMeshAgent agent; // The Nav Mesh Agent Component
 
     [SerializeField]
@@ -47,15 +49,25 @@ public class BeeAIController : MonoBehaviour
     protected void Start()
     {
         // Get Components
-        hive = GameObject.FindGameObjectWithTag("Hive").GetComponent<Hive>();
+        hive = GameManager.instance.hive;
 
         agent = GetComponent<NavMeshAgent>();
         beeMovement = GetComponent<BeeMovement>();
+        beeData = GetComponent<BeeData>();
+
+        // Add self to game manager
+        GameManager.instance.bees.Add(this);
     }
 
     // Update is called once per frame
     protected void Update()
     {
+
+        if (hive == null)
+        {
+            hive = GameManager.instance.hive;
+        }
+
         Sight();
 
         if(currentHearingRefreshPeriod > 0)

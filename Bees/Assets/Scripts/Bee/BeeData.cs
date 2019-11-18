@@ -5,5 +5,5 @@ using UnityEngine;
 public class BeeData : MonoBehaviour
 {
     // Variables
-    public float moveSpeed;     // How fast the bee moves
+    public float moveSpeed = 5f;     // How fast the bee moves
 }

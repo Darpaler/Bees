@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     // Variables
     public static GameManager instance;
     public List<SpawnFlower> despawnedFlowerSpawns = new List<SpawnFlower>();
+    public List<BeeAIController> bees = new List<BeeAIController>();
+    public Hive hive;
 
     void Awake()
     {

@@ -9,6 +9,12 @@ public class Hive : MonoBehaviour
     // Variables
     public List<Flower> flowerList = new List<Flower>(); // The list of flowers
 
+    void Start()
+    {
+        // Add self to game manager
+        GameManager.instance.hive = this;
+    }
+
     public Transform GetRandomPointFromHive(GameObject ai, float minDistanceFromHive, float maxDistanceFromHive)
     {
         // Get a random distance
