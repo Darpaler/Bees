@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Experimental.PlayerLoop;
@@ -171,10 +170,15 @@ public class BeeAIController : MonoBehaviour
     }
     protected void HearPlayer(GameObject player)
     {
-        Debug.Log("Heard The Player");
+        Vector2 distanceFromPlayer = new Vector2(minDistanceFromPlayer, maxDistanceFromPlayer);
 
+        RandomPointFromPlayer(distanceFromPlayer);
+    }
+
+    public void RandomPointFromPlayer(Vector2 distanceFromPlayer)
+    {
         // Get a random distance
-        float walkRadius = Random.Range(minDistanceFromPlayer, maxDistanceFromPlayer);
+        float walkRadius = Random.Range(distanceFromPlayer.x, distanceFromPlayer.y);
 
         // Get a random direction
         Vector3 randomDirection;

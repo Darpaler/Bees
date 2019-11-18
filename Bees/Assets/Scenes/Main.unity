@@ -9647,12 +9647,17 @@ PrefabInstance:
     - target: {fileID: 8895147712858446342, guid: ad1ebedf989aa1641a23af5607c4682e,
         type: 3}
       propertyPath: m_UseGravity
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8895147712858446342, guid: ad1ebedf989aa1641a23af5607c4682e,
         type: 3}
       propertyPath: m_IsKinematic
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8895147712858446342, guid: ad1ebedf989aa1641a23af5607c4682e,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 126
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad1ebedf989aa1641a23af5607c4682e, type: 3}
@@ -12793,7 +12798,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3e221e4acf2b4c49ac5895feffe2ffe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowerSpawns: []
+  despawnedFlowerSpawns: []
 --- !u!4 &1881256085
 Transform:
   m_ObjectHideFlags: 0
@@ -16819,7 +16824,7 @@ PrefabInstance:
     - target: {fileID: 3772410331751811479, guid: 1e3d09ee5fe6d6c4c8c44936679681c9,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3767783125918520469, guid: 1e3d09ee5fe6d6c4c8c44936679681c9,
         type: 3}
@@ -16893,7 +16898,7 @@ PrefabInstance:
     - target: {fileID: 7703786098253846545, guid: ccffa1c4ba5b3f045a8cb0ded37d1f32,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7708695109776327955, guid: ccffa1c4ba5b3f045a8cb0ded37d1f32,
         type: 3}

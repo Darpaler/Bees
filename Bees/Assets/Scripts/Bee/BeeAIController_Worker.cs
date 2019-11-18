@@ -89,4 +89,9 @@ public class BeeAIController_Worker : BeeAIController
         }
     }
 
+    public void RandomPointFromPlayer(Vector2 distanceFromPlayer)
+    {
+        base.RandomPointFromPlayer(distanceFromPlayer);
+    }
+
 }

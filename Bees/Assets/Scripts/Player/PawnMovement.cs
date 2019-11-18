@@ -11,6 +11,7 @@ public class PawnMovement : MonoBehaviour
     private Vector3 previousPosition;
     private NoiseMaker noiseMaker;
     private bool canMove = true;
+    private bool usedPanic = false;
 
     // Start is called before the first frame update
     void Start()
@@ -98,6 +99,27 @@ public class PawnMovement : MonoBehaviour
         if (GameManager.instance.despawnedFlowerSpawns.Count != 0)
         {
             GameManager.instance.despawnedFlowerSpawns[Random.Range(0, GameManager.instance.despawnedFlowerSpawns.Count - 1)].Spawn();
+        }
+    }
+
+    public void Panic(Vector2 distanceFromPlayer)
+    {
+        if (!usedPanic)
+        {
+            BroadcastMessage("RandomPointFromPlayer", distanceFromPlayer);
+            usedPanic = true;       
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.GetComponent<BeeAIController>())
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Debug.Log("The other object is " + collision.gameObject);
         }
     }
 }

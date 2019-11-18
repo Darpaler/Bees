@@ -61,5 +61,10 @@ public class PlayerController : MonoBehaviour
         {
             movement.DropFlower();
         }
+        // Panic Button
+        if (Input.GetKeyDown(KeyCode.Keypad4))
+        {
+            movement.Panic(data.panicRadiusRange);
+        }
     }
 }

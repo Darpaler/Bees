@@ -78,4 +78,9 @@ public class BeeAIController_Soldier : BeeAIController
         secondTarget = player.transform;
     }
 
+    public void RandomPointFromPlayer(Vector2 distanceFromPlayer)
+    {
+        base.RandomPointFromPlayer(distanceFromPlayer);
+    }
+
 }
