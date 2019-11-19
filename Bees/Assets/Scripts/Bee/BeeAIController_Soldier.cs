@@ -74,13 +74,8 @@ public class BeeAIController_Soldier : BeeAIController
 
     protected override void SeePlayer(GameObject player)
     {
+        base.SeePlayer(player);
         mainTarget = player.transform;
         secondTarget = player.transform;
     }
-
-    public void RandomPointFromPlayer(Vector2 distanceFromPlayer)
-    {
-        base.RandomPointFromPlayer(distanceFromPlayer);
-    }
-
 }

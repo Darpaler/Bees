@@ -62,11 +62,11 @@ public class BeeAIController : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
-
         if (hive == null)
         {
             hive = GameManager.instance.hive;
         }
+        //if (player == null) { return;}
 
         Sight();
 
@@ -178,7 +178,10 @@ public class BeeAIController : MonoBehaviour
     }
     protected virtual void SeePlayer(GameObject player)
     {
-
+        if (!player.GetComponent<PawnMovement>().isVisible)
+        {
+            return;
+        }
     }
     protected void HearPlayer(GameObject player)
     {
@@ -198,18 +201,24 @@ public class BeeAIController : MonoBehaviour
 
         // Grab a point on the nav mesh at the random distance and direction
         NavMeshHit hit;
-        NavMesh.SamplePosition(randomDirection, out hit, walkRadius, 1);
 
-        // Create a temporary target there
-        GameObject tempTransform = new GameObject();
-        tempTransform.name = name + "'s TempTarget";
-        tempTransform.transform.position = hit.position;
-        tempTransform.AddComponent<SphereCollider>();
-        tempTransform.AddComponent<TempTarget>();
-        tempTransform.GetComponent<TempTarget>().targetOwner = gameObject;
+        if(NavMesh.SamplePosition(randomDirection, out hit, walkRadius, NavMesh.AllAreas))
+        {
+            // Create a temporary target there
+            GameObject tempTransform = new GameObject();
+            tempTransform.name = name + "'s TempTarget";
+            tempTransform.transform.position = hit.position;
+            tempTransform.AddComponent<SphereCollider>();
+            tempTransform.AddComponent<TempTarget>();
+            tempTransform.GetComponent<TempTarget>().targetOwner = gameObject;
 
-        // Set the main target to that target
-        mainTarget = tempTransform.transform;
+            // Set the main target to that target
+            mainTarget = tempTransform.transform;
+        }
+        else
+        {
+            mainTarget = null;
+        }
     }
 
 }

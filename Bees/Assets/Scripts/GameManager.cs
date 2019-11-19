@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public List<SpawnFlower> despawnedFlowerSpawns = new List<SpawnFlower>();
     public List<BeeAIController> bees = new List<BeeAIController>();
     public Hive hive;
+    public GameObject beeManager;
 
     void Awake()
     {

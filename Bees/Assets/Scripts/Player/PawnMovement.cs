@@ -10,8 +10,9 @@ public class PawnMovement : MonoBehaviour
     private Animator anim;
     private Vector3 previousPosition;
     private NoiseMaker noiseMaker;
-    private bool canMove = true;
+    public bool isVisible = true;
     private bool usedPanic = false;
+    private Vector3 movementVector = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
@@ -22,10 +23,13 @@ public class PawnMovement : MonoBehaviour
         noiseMaker = GetComponent<NoiseMaker>();
 
         previousPosition = transform.position;
+
     }
 
     void Update()
     {
+        characterController.SimpleMove(movementVector);
+        movementVector = Vector3.zero;
         if (transform.position != previousPosition)
         {
             anim.SetBool("isMoving", true);
@@ -40,8 +44,9 @@ public class PawnMovement : MonoBehaviour
     //Movement Functions
     public void MoveVertical(float speed)                                               // Move Foward/Back
     {
-        if (!canMove) { return; }
-        characterController.SimpleMove(Vector3.forward * speed * Time.deltaTime);     // Move By How Fast You Are
+        if (!isVisible) { return; }
+
+        movementVector.z = speed * Time.deltaTime; // Move By How Fast You Are
         if(speed > 0)
         {
             transform.rotation = Quaternion.identity;
@@ -57,8 +62,9 @@ public class PawnMovement : MonoBehaviour
 
     public void MoveHorizontal(float speed)                                             // Move Left/Right
     {
-        if (!canMove) { return; }
-        characterController.SimpleMove(Vector3.right * speed * Time.deltaTime);     // Move By How Fast You Are
+        if (!isVisible) { return; }
+
+        movementVector.x = speed * Time.deltaTime;    // Move By How Fast You Are
         transform.rotation = Quaternion.Euler(0, 90 * Mathf.Sign(speed), 0);
         // Set the volume to the movement volume, unless we are already making a louder sound
         noiseMaker.volume = Mathf.Max(noiseMaker.volume, noiseMaker.moveVolume);
@@ -67,14 +73,13 @@ public class PawnMovement : MonoBehaviour
 
     public void Stealth()
     {
-        canMove = false;
-        characterController.detectCollisions = false;
+        isVisible = false;
         noiseMaker.enabled = false;
     }
 
     public void UnStealth()
     {
-        canMove = true;
+        isVisible = true;
         characterController.detectCollisions = true;
         noiseMaker.enabled = true;
     }
@@ -104,22 +109,19 @@ public class PawnMovement : MonoBehaviour
 
     public void Panic(Vector2 distanceFromPlayer)
     {
+        Debug.Log("Panic");
         if (!usedPanic)
         {
-            BroadcastMessage("RandomPointFromPlayer", distanceFromPlayer);
+            GameManager.instance.beeManager.BroadcastMessage("RandomPointFromPlayer", distanceFromPlayer);
             usedPanic = true;       
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (collision.gameObject.GetComponent<BeeAIController>())
+        if (hit.gameObject.GetComponent<BeeAIController>())
         {
             Destroy(gameObject);
-        }
-        else
-        {
-            Debug.Log("The other object is " + collision.gameObject);
         }
     }
 }
