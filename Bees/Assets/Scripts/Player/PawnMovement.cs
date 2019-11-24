@@ -19,6 +19,7 @@ public class PawnMovement : MonoBehaviour
     {
         // Get Components
         characterController = GetComponent<CharacterController>();
+        characterController.enabled = true;
         anim = GetComponent<Animator>();
         noiseMaker = GetComponent<NoiseMaker>();
 
@@ -74,13 +75,14 @@ public class PawnMovement : MonoBehaviour
     public void Stealth()
     {
         isVisible = false;
+        characterController.enabled = false;
         noiseMaker.enabled = false;
     }
 
     public void UnStealth()
     {
         isVisible = true;
-        characterController.detectCollisions = true;
+        characterController.enabled = true;
         noiseMaker.enabled = true;
     }
 
@@ -107,12 +109,13 @@ public class PawnMovement : MonoBehaviour
         }
     }
 
-    public void Panic(Vector2 distanceFromPlayer)
+    public void Panic(Vector2 distanceFromPlayer, float panicTime)
     {
         Debug.Log("Panic");
         if (!usedPanic)
         {
             GameManager.instance.beeManager.BroadcastMessage("RandomPointFromPlayer", distanceFromPlayer);
+            GameManager.instance.beeManager.BroadcastMessage("SetPanicTime", panicTime);
             usedPanic = true;       
         }
     }

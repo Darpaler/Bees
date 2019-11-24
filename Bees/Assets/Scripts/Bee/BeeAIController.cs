@@ -45,6 +45,10 @@ public class BeeAIController : MonoBehaviour
     private float hearingRefreshPeriod = 3f;
     private float currentHearingRefreshPeriod = 0f;
 
+    [SerializeField]
+    private float currentPanicTime = 0f;
+    private bool canSee;
+
     // Start is called before the first frame update
     protected void Start()
     {
@@ -62,28 +66,50 @@ public class BeeAIController : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
+        // Check to see if the panic time is active
+        if (currentPanicTime > 0)
+        {
+            // If so, count down
+            currentPanicTime -= Time.deltaTime;
+            // Don't look for the player
+            canSee = false;
+        }
+        else
+        {
+            // If not, continue looking for the player
+            canSee = true;
+        }
+
+        // Set the hive
         if (hive == null)
         {
             hive = GameManager.instance.hive;
         }
-        //if (player == null) { return;}
 
+        // Use sight
         Sight();
 
+        // Count down hearing refresh period
         if(currentHearingRefreshPeriod > 0)
         {
             currentHearingRefreshPeriod -= Time.deltaTime;
         }
 
+        // If we haven't already seen the player, and the hearing refresh period is up
         if (mainTarget != player && currentHearingRefreshPeriod <= 0)
         {
+            // Run Hearing
             Hearing();
+            // Reset refresh period
             currentHearingRefreshPeriod = hearingRefreshPeriod;
         }
 
+        // Always seek main target
         if (mainTarget)
         {
             agent.SetDestination(mainTarget.position);
+
+            // If the target is reach
             if (CheckDestinationReached(mainTarget.position))
             {
                 ReachedDestination();
@@ -105,14 +131,19 @@ public class BeeAIController : MonoBehaviour
 
     protected void ReachedDestination()
     {
+        // If second target is null
         if (!secondTarget)
         {
+            // Go to the hive
             mainTarget = hive.transform;
         }
     }
 
     protected void Sight()
     {
+        // If the player paniced, don't interrupt
+        if (!canSee) { return; }
+
         // If the bee is heading towards the hive, don't interrupt
         if(mainTarget != null && mainTarget.gameObject == hive.gameObject) { return; }
 
@@ -219,6 +250,11 @@ public class BeeAIController : MonoBehaviour
         {
             mainTarget = null;
         }
+    }
+
+    public void SetPanicTime(float panicTime)
+    {
+        currentPanicTime = panicTime;
     }
 
 }
